@@ -1,13 +1,9 @@
-import express from "express";
-// const auth = require("../controllers/authController");
+import { routes } from "../helper/routes";
 
 import {login, signup} from "../controllers/authController"
 
+routes.post("/login", login )
+routes.post("/signup", signup )
 
-const routes = express.Router();
-// routes.post("/login", auth.login )
-routes.get("/login", login )
-routes.get("/signup", signup )
-
-//
-module.exports = routes;
+const authRoute = routes
+export default authRoute ;

@@ -5,7 +5,8 @@ import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 const app: Express = express()
-const authRoute = require("./routes/authRoute")
+import authRoute from "./routes/authRoute"
+import accountRoute from "./routes/accountRoute"
 import SystemError from "./helper/systemError";
 
 app.use(helmet())
@@ -31,6 +32,7 @@ app.use(cookieParser());
 
   
 app.use("/api/v1/auth", authRoute)
+app.use("/api/v1/account", accountRoute )
 
 app.all("*", (req, res, next) => {
     next(new SystemError(`can't find ${req.originalUrl} on this server!`, 400));

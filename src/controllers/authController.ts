@@ -31,7 +31,7 @@ export const login = async (req: Request, res: Response, next:NextFunction) => {
 
     //3) fetch user with the email provided
 
-    let result: Array<User> = await knex.select("email", "password").from("customer").where("email", email)
+    let result: Array<User> = await knex.select("email", "password", "_id").from("customer").where("email", email)
 
     //4) find if user with email exist
     if (result.length === 0 ) {
@@ -43,6 +43,7 @@ export const login = async (req: Request, res: Response, next:NextFunction) => {
         return next(new systemError("Invalid email or password", 400));
       }
     //6) Generate authentication token with JWT
+    
     let token = TokenGenerator(result[0]._id)
 
     return res.status(200).json({
@@ -67,6 +68,7 @@ export const login = async (req: Request, res: Response, next:NextFunction) => {
 
       let result: Array<User> = await knex.select("email").from("customer").where("email", email)
 
+
        //3) find if user with email exist
        if (result.length !== 0 ) {
          return next(new systemError("User with this email already exist", 400));
@@ -74,9 +76,10 @@ export const login = async (req: Request, res: Response, next:NextFunction) => {
       //4) ash the password
       const salt = await genSalt(12);
       password = await hash(password, salt)
-      //5 save user credential to db
-      await knex("customer").insert({ email, password, firstname, lastname, address, country })
- 
+      //5) save user credential to db
+      let newUserId = await knex("customer").insert({ email, password, firstname, lastname, address, country })
+      //6) initialize wallet
+      await knex("account").insert({ userId:newUserId , walletBalance:0.00 })
      return res.status(200).json({
        status: "success",
        message: "account created in succesfully"
@@ -96,6 +99,8 @@ export const login = async (req: Request, res: Response, next:NextFunction) => {
   export const tokenValidator = async (req:Request, res:Response, next:NextFunction) => {
     try {
       let token;
+     
+      
    
       //1) Abstract the token from the authorization
       if (
@@ -108,16 +113,15 @@ export const login = async (req: Request, res: Response, next:NextFunction) => {
       if (!token) {
         return next(new systemError("Unauthorize Request", 401));
       }
-    
       //3) verify token
-      let decodedId = jwt.verify(token, `${process.env.JWT_SECRET}`);
-      let result: Array<User> = await knex.select().from("customer").where("_id",decodedId)
+      let decodedId: any = jwt.verify(token, `${process.env.JWT_SECRET}`);
+      
+      let result: Array<User> = await knex.select().from("customer").where("_id",decodedId.id)
       if (result.length === 0 ) {
         return next(new systemError("User does not exist", 401));
       }
     
       req.body.user = result[0];
-    
       next();
     } catch (error) {
       console.log(error);
