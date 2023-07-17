@@ -8,7 +8,7 @@
     "prestart": "npm run build",
     "start": "node dist/server.js",
     "preserver": "npm run build",
-    "server": "concurrently \"npx tsc -w\"  \"NODE_ENV=production nodemon ./dist/server.js\""
+    "server": "concurrently \"npx tsc -w\"  \"NODE_ENV=development nodemon ./dist/server.js\""
   },
   "author": "Hammed Olatunji",
   "license": "ISC",

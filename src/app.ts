@@ -8,6 +8,7 @@ const app: Express = express()
 import authRoute from "./routes/authRoute"
 import accountRoute from "./routes/accountRoute"
 import SystemError from "./helper/systemError";
+import { errorHandler } from "./helper/errorHandler";
 
 app.use(helmet())
 app.use(cors({origin: true}))
@@ -28,13 +29,19 @@ let limiter = rateLimit({
 app.use(express.json());
 // cookie parser
 app.use(cookieParser());
+// log route to the console in develepment mode
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 
   
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/account", accountRoute )
-
+// captured all routes
 app.all("*", (req, res, next) => {
     next(new SystemError(`can't find ${req.originalUrl} on this server!`, 400));
   });
+
+app.use(errorHandler);
 export default app
