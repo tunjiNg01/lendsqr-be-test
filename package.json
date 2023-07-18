@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "lendsqr backend engineer assessment",
   "main": "dist/app.js",
-  "engines": { "node" :"18.12.1"},
+  "engines": { "node" :"18.12.1", "npm":"8.19.2"},
   "scripts": {
     "build": "rimraf dist && npx tsc",
     "postinstall": "tsc",
-    "prestart": "npm run build",
     "start": "node dist/server.js",
     "preserver": "npm run build",
     "server": "concurrently \"npx tsc -w\"  \"NODE_ENV=development nodemon ./dist/server.js\"",
