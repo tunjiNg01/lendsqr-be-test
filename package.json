@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "lendsqr backend engineer assessment",
   "main": "dist/app.js",
+  "engine": "18.12.1",
   "scripts": {
     "build": "rimraf dist && npx tsc",
     "prestart": "npm run build",
