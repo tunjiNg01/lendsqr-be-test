@@ -1,13 +1,15 @@
 import {Knex}from "knex";
+import dotenv from "dotenv"
+dotenv.config()
 
 const knex: Knex = require('knex')({
     client: 'mysql',
     connection: {
-      host : `localhost`,
-      port : `3306`,
-      user : `demoUser`,
-      password : `password123`,
-      database : `democredit`
+      host : `${process.env.CLOUD_DB_HOST}`,
+      port : `${process.env.CLOUD_DB_PORT}`,
+      user : `${process.env.CLOUD_DB_USERNAME}`,
+      password : `${process.env.CLOUD_DB_PASSWORD}`,
+      database : `${process.env.ClOUD_DB_NAME}`
     },
     // debug:true,
     // asyncStackTraces: true,
@@ -15,12 +17,7 @@ const knex: Knex = require('knex')({
    
   });
 
-// if(process.env.NODE_ENV === "development"){
-// }
 
-
-// if(process.env.NODE_ENV === "production"){
-// }
 
 export default knex
 
