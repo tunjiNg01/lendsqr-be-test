@@ -10,6 +10,6 @@ if (process.env.NODE_ENV == "production") {
 
 const port = process.env.PORT 
 
-app.listen(port, () => {
+export default app.listen(port, () => {
     console.log(`now listening on port! ${port}`);
 })

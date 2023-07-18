@@ -4,14 +4,14 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-const app: Express = express()
 import authRoute from "./routes/authRoute"
 import accountRoute from "./routes/accountRoute"
 import SystemError from "./helper/systemError";
 import { errorHandler } from "./helper/errorHandler";
+const app: Express = express()
 
-app.use(helmet())
-app.use(cors({origin: true}))
+app.use(helmet());
+app.use(cors({origin: true}));
 
 
 
