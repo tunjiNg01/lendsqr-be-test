@@ -6,6 +6,7 @@
   "engines": { "node" :"18.12.1"},
   "scripts": {
     "build": "rimraf dist && npx tsc",
+    "postinstall": "tsc",
     "prestart": "npm run build",
     "start": "node dist/server.js",
     "preserver": "npm run build",
